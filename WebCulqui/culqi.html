@@ -1,0 +1,134 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+
+    <script src="Scripts/jquery-1.10.2.js"></script>
+    <script src="https://checkout.culqi.com/v2"></script>
+    <script src="Scripts/bootstrap.min.js"></script>
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+
+    <script>
+        Culqi.publicKey = 'pk_test_PduG6BSK54mJ02va';
+        Culqi.init();
+    </script>
+
+
+    <script>
+
+        //function settings(_title, _currency, _description, _amount) {
+        //    Culqi.settings({
+        //        title: _title,
+        //        currency: _currency,
+        //        description: _description,
+        //        amount: _amount,
+        //        metadata: '5831543'
+        //    });
+
+        //    Culqi.open();
+        //    e.preventDefault();
+
+        //}
+
+
+
+
+        //function culqi() {
+
+        //    if (Culqi.token) { // ¡Token creado exitosamente!
+        //        // Get the token ID:
+        //        var token = Culqi.token.id;
+        //        alert('Venta Realizada con Exito');
+
+        //    } else { // ¡Hubo algún problema!
+        //        // Mostramos JSON de objeto error en consola
+        //        console.log(Culqi.error);
+        //        alert(Culqi.error.mensaje);
+        //    }
+        //};
+
+        function culqi() {
+
+            if (Culqi.token) { // ¡Token creado exitosamente!
+                // Get the token ID:
+                var token = Culqi.token.id;
+                alert('Se ha creado un token:'.token);
+
+            } else { // ¡Hubo algún problema!
+                // Mostramos JSON de objeto error en consola
+                console.log(Culqi.error);
+                alert(Culqi.error.mensaje);
+            }
+        };
+
+
+
+    </script>
+
+    <script>
+        $(document).ready(function () {
+
+            //$('#buyButton').on('click', function (e) {
+            //    // Abre el formulario con las opciones de Culqi.settings
+
+            //    settings('ETPOSA', 'PEN', 'LIMA-HUANUCO-9:30PM', 5000)
+
+
+            //    // return false;
+
+            //});
+
+            $('#buyButton').on('click', function (e) {
+                // Abre el formulario con las opciones de Culqi.settings
+                Culqi.createToken();
+                e.preventDefault();
+            });
+
+        });
+
+    </script>
+
+
+
+
+
+</head>
+<body>
+    <!--<input value="Pagar" id="buyButton" type="button" />-->
+    <form action="" method="POST" id="culqi-card-form" style="width:300px;">
+        <div>
+            <label>
+                <span>Correo Electrónico</span>
+                <input type="text" size="50" data-culqi="card[email]" class="form-control" >
+            </label>
+        </div>
+        <div>
+            <label>
+                <span>Número de tarjeta</span>
+                <input type="text" size="20" data-culqi="card[number]"  class="form-control">
+            </label>
+        </div>
+        <div>
+            <label>
+                <span>CVC</span>
+                <input type="text" size="4" data-culqi="card[cvc]"  class="form-control">
+            </label>
+        </div>
+        <div>
+            <label>
+                <span>Fecha expiración (MM/YYYY)</span>
+                <input type="text" size="2" data-culqi="card[exp_month]" style="width:60px;"  class="form-control">
+            </label>
+            <span>/</span>
+            <input type="text" size="4" data-culqi="card[exp_year]"  style="width:90px;"  class="form-control">
+        </div>
+        <button class="btn btn-info" type="button" id="buyButton"  >Pagar</button>
+       
+    </form>
+
+    <script>
+        Culqi.createToken();
+    </script>
+</body>
+</html>

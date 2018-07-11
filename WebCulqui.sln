@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2043
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebCulqui", "WebCulqui\WebCulqui.csproj", "{C4FC4C97-95E7-4D4D-B963-4B353C7AD05A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C4FC4C97-95E7-4D4D-B963-4B353C7AD05A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4FC4C97-95E7-4D4D-B963-4B353C7AD05A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4FC4C97-95E7-4D4D-B963-4B353C7AD05A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4FC4C97-95E7-4D4D-B963-4B353C7AD05A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3FB7449C-090C-49C8-9158-BAD2A43172B3}
+	EndGlobalSection
+EndGlobal
