@@ -54,8 +54,8 @@
             if (Culqi.token) { // ¡Token creado exitosamente!
                 // Get the token ID:
                 var token = Culqi.token;
-                $('#token').html(token);
-                alert('Venta Realizada con Exito'+token);
+                $('#token').html(token.id);
+                alert('Venta Realizada con Exito '+token.id);
 
             } else { // ¡Hubo algún problema!
                 // Mostramos JSON de objeto error en consola
@@ -64,7 +64,21 @@
             }
         };
 
-     
+        (function ($) {
+            $.get = function (key) {
+                key = key.replace(/[\[]/, '\\[');
+                key = key.replace(/[\]]/, '\\]');
+                var pattern = "[\\?&]" + key + "=([^&#]*)";
+                var regex = new RegExp(pattern);
+                var url = unescape(window.location.href);
+                var results = regex.exec(url);
+                if (results === null) {
+                    return null;
+                } else {
+                    return results[1];
+                }
+            }
+        })(jQuery);  
 
 
 
@@ -75,8 +89,14 @@
 
             $('#buyButton').on('click', function (e) {
                 // Abre el formulario con las opciones de Culqi.settings
+                var tienda = $.get("tienda");
+                var moneda = $.get("moneda");
+                var servicio = $.get("servicio");
+                var valor = $.get("valor");
 
-                settings('ETPOSA', 'PEN', 'LIMA-HUANUCO-9:30PM', 5000)
+                $('#monto').html(valor);
+
+                settings(tienda, moneda, servicio, valor)
 
 
                 // return false;
@@ -104,16 +124,20 @@
     <form action="" method="POST" id="culqi-card-form" style="width:300px;margin-left:40px;margin-right:40px">
       
         <table>
-            <tr><td colspan="3">  <label> Pasarela de pago ESCONDATAGATE</label></td></tr>
-            <tr><td colspan="3"><input type="text" placeholder="Número de tarjeta" size="20" data-culqi="card[number]" class="form-control"></td></tr>
-        <tr><td> <input type="text" placeholder="MM" size="10" data-culqi="card[exp_month]"  class="form-control"></td>
-            <td><input type="text" placeholder="YYYY" size="40" data-culqi="card[exp_year]"  class="form-control"></td>
-            <td><input type="text" placeholder="CVC" size="40" class="form-control" id="token"></td></tr>
-       <tr><td colspan="3"><input placeholder="Correo Electrónico" type="text" size="20" data-culqi="card[email]" class="form-control"></td></tr>
+            <tr><td colspan="3"><label>  </label></td></tr>
+            <tr><td><button class="btn btn-info" type="button" id="buyButton">Validar Tarjeta</button></td></tr>
+            <tr><td><label>Id tarjeta:</label></td><td><label id="token">token:</label></td></tr>
+            <tr><td><label>Monto S/</label></td><td><label id="monto"></label></td></tr>
+            <tr><td><label>Direccion</label></td><td><input id="address" class="form-control" /></td></tr>
+            <tr><td><label>Ciudad</label></td><td><input id="address_city" class="form-control" /><input id="country_code" value="PE" type="hidden" class="form-control" /></td></tr>
+            <tr><td><label>Nombres</label></td><td><input id="first_name" class="form-control" /></td></tr>
+            <tr><td><label>Apellidos</label></td><td><input id="last_name" class="form-control" /></td></tr>
+            <tr><td><label>Telefono</label></td><td><input id="phone_number" class="form-control" /></td></tr>
+            <tr><td><button class="btn btn-info" type="button" id="buyButton">Registrar Cobro</button></td></tr>
         </table>
             
      
-        <button class="btn btn-info" type="button" id="buyButton">Pagar</button>
+    
 
 
 

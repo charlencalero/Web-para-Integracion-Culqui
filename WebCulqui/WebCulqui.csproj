@@ -49,6 +49,9 @@
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="RestSharp, Version=106.3.1.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.106.3.1\lib\net452\RestSharp.dll</HintPath>
+    </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -143,6 +146,7 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Wf_pasarela.aspx" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -195,6 +199,19 @@
     <Compile Include="Contact.aspx.designer.cs">
       <DependentUpon>Contact.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Culqi\Card.cs" />
+    <Compile Include="Culqi\Charge.cs" />
+    <Compile Include="Culqi\Customer.cs" />
+    <Compile Include="Culqi\Event.cs" />
+    <Compile Include="Culqi\Iin.cs" />
+    <Compile Include="Culqi\model\Config.cs" />
+    <Compile Include="Culqi\model\Security.cs" />
+    <Compile Include="Culqi\Plan.cs" />
+    <Compile Include="Culqi\Refund.cs" />
+    <Compile Include="Culqi\Subscription.cs" />
+    <Compile Include="Culqi\Token.cs" />
+    <Compile Include="Culqi\Transfer.cs" />
+    <Compile Include="Culqi\util\Util.cs" />
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -202,6 +219,9 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Entity\AntifraudDetails.cs" />
+    <Compile Include="Entity\Cargo.cs" />
+    <Compile Include="Entity\RespCargo.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -226,6 +246,13 @@
     </Compile>
     <Compile Include="ViewSwitcher.ascx.designer.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Wf_pasarela.aspx.cs">
+      <DependentUpon>Wf_pasarela.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Wf_pasarela.aspx.designer.cs">
+      <DependentUpon>Wf_pasarela.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
