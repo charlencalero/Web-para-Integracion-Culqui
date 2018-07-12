@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <script>
+       
+            $(document).ready(function () {
+
+ 
+                var resp = $.get("resp");
+            var op = $.get("op");
+            var brand = $.get("brand");
+            var monto = $.get("monto");
+            var tarjeta = $.get("tarjeta");
+                var refe = $.get("refe");
+
+                $("#LabelResp").html(resp);
+                $("#LabelOP").html("O.P. : " + op);
+                $("#LabelBrand").html(brand);
+                $("#LabelMontoCobrado").html("S/ " + monto);
+                $("#LabelTarjeta").html("N° Tarjeta. : " + tarjeta);
+                $("#LabelRefe").html("N° Refe. : " +refe);
+        
+        });
+    </script>
+    <script>
+        (function ($) {
+            $.get = function (key) {
+                key = key.replace(/[\[]/, '\\[');
+                key = key.replace(/[\]]/, '\\]');
+                var pattern = "[\\?&]" + key + "=([^&#]*)";
+                var regex = new RegExp(pattern);
+                var url = unescape(window.location.href);
+                var results = regex.exec(url);
+                if (results === null) {
+                    return null;
+                } else {
+                    return results[1];
+                }
+            }
+        })(jQuery);
+
+
+    </script>
+    <table>
+        <tr><td><strong><label id="LabelBrand"></label></strong></td></tr>
+        <tr></tr>
+        <tr><td><label id="LabelResp"></label> </td></tr>
+        <tr></tr>
+        <tr><td><label id="LabelOP"></label></td></tr>
+        <tr><td><label id="LabelRefe"></label></td></tr>
+        <tr><td><label id="LabelTarjeta"></label></td></tr>
+        <tr><td><label id="LabelMontoCobrado"></label></td></tr>
+
+    </table>
+</body>
+</html>

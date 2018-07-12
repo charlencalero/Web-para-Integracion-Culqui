@@ -131,11 +131,23 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="About.aspx" />
+    <Content Include="boucher.html" />
     <Content Include="Contact.aspx" />
+    <Content Include="Content\amex.png" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\cencosud.png" />
+    <Content Include="Content\cmr.png" />
+    <Content Include="Content\diners.png" />
+    <Content Include="Content\logo_escon.png" />
+    <Content Include="Content\mc.png" />
+    <Content Include="Content\oh.png" />
     <Content Include="Content\Pago-Tarjeta.gif" />
+    <Content Include="Content\presta.png" />
+    <Content Include="Content\ripley.png" />
     <Content Include="Content\Site.css" />
+    <Content Include="Content\up.png" />
+    <Content Include="Content\visa.png" />
     <Content Include="culqi.html" />
     <Content Include="Default.aspx" />
     <Content Include="favicon.ico" />

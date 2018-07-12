@@ -77,14 +77,10 @@
                     success: function (data) {
                         // console(data.outcome.user_message);
                         $("#espere").hide();
+                        var brand = data.source.iin.card_brand + "-" + data.source.iin.card_category;
+                        window.open("boucher.html?resp=" + data.outcome.user_message + "&op=" + data.outcome.code+"&brand="+brand+"&monto=" + data.amount+"&tarjeta=" + data.source.card_number+"&refe=" + data.metadata.idcomprobante);
 
-
-                        $("#LabelResp").html(data.outcome.user_message);
-                        $("#LabelOP").html("O.P. : " + data.outcome.code);
-                        $("#LabelBrand").html(data.source.iin.card_brand + " - " + data.source.iin.card_category);
-                        $("#LabelMontoCobrado").html("S/ " + data.amount);
-                        $("#LabelTarjeta").html("N° Tarjeta. : " + data.source.card_number);
-                        $("#LabelRefe").html("N° Refe. : " + data.metadata.idcomprobante);
+                    
                     },
                     type: 'POST'
                 });
@@ -178,14 +174,37 @@
 
 </head>
 <body>
-    <form runat="server" method="POST" style="margin-left:40px;margin-right:40px;margin-top:100px">
+    <form runat="server" method="POST" style="margin-left:40px;margin-right:40px;margin-top:50px">
 
         <table style="width:100%;text-align:center;">
-            <tr><td colspan="3"><label>  </label></td></tr>
-            <tr><td><button class="btn btn-info" type="button" id="buyButton">Pagar con CULQI</button></td></tr>
+            <tr>
+                <td colspan="3">
+                    <img src="Content/logo_escon.png" style="height:80px;" />
+                </td>
+            </tr>
+            <tr><td><h4><strong>ESCON-MovilPOS</strong></h4></td></tr>
+            <tr ><td ><button style="margin-bottom:50px;margin-top:50px" class="btn btn-info" type="button" id="buyButton"><strong>Abrir Pasarela</strong></button></td></tr>
+            <tr><td><label></label></td></tr>
+            <tr><td>
+    <img src="Content/visa.png" />
+    <img src="Content/mc.png" />
+    <img src="Content/diners.png" />
+    <img src="Content/amex.png" />
 
+</td></tr>
+            <tr><td>
 
+    <img src="Content/cmr.png" />
+    <img src="Content/ripley.png" />
+    <img src="Content/oh.png" />
+    <img src="Content/cencosud.png" />
+</td></tr>
+            <tr><td>
+                    <img src="Content/presta.png" />
+    <img src="Content/up.png" />
 
+</td></tr>
+            <tr><td></td></tr>
             <tr>
                 <td>
                     <input id="LabelId" type="text" />
@@ -205,14 +224,7 @@
 
 
             <tr><td><img src="Content/Pago-Tarjeta.gif" id="espere" /></td></tr>
-            <tr><td><strong><label id="LabelBrand"></label></strong></td></tr>
-            <tr></tr>
-            <tr><td><label id="LabelResp"></label> </td></tr>
-            <tr></tr>
-            <tr><td><label id="LabelOP"></label></td></tr>
-            <tr><td><label id="LabelRefe"></label></td></tr>
-            <tr><td><label id="LabelTarjeta"></label></td></tr>
-            <tr><td><label id="LabelMontoCobrado"></label></td></tr>
+
         </table>
 
 
