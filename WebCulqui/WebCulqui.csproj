@@ -134,6 +134,7 @@
     <Content Include="Contact.aspx" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Pago-Tarjeta.gif" />
     <Content Include="Content\Site.css" />
     <Content Include="culqi.html" />
     <Content Include="Default.aspx" />
@@ -249,7 +250,6 @@
     </Compile>
     <Compile Include="Wf_pasarela.aspx.cs">
       <DependentUpon>Wf_pasarela.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Wf_pasarela.aspx.designer.cs">
       <DependentUpon>Wf_pasarela.aspx</DependentUpon>

@@ -1,8 +1,11 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title></title>
+﻿
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta http-equiv="Content-Type" name="viewport" content="charset=utf-8,width=device-width, initial-scale=1.0" />
+
+    <title>PASARELLA DE PAGO</title>
 
     <script src="Scripts/jquery-1.10.2.js"></script>
     <script src="https://checkout.culqi.com/v2"></script>
@@ -11,21 +14,8 @@
 
     <script>
         Culqi.publicKey = 'pk_test_PduG6BSK54mJ02va';
-        //Culqi.init();
 
-     //   Culqi.publicKey = 'pk_test_zIJd7UuclPwxLDPx';
-        //Culqi.settings({
-        //    title: 'Culqi Store',
-        //    currency: 'PEN',
-        //    description: 'Polo/remera Culqi lover',
-        //    amount: 3500
-        //});
-        //Culqi.settings({
-        //    title: 'Culqi Store',
-        //    currency: 'PEN',
-        //    description: 'Polo/remera Culqi lover',
-        //    amount: 3500
-        //});
+
 
     </script>
 
@@ -38,7 +28,7 @@
                 currency: _currency,
                 description: _description,
                 amount: _amount,
-                metadata: '5831543'
+                metadata: ''
             });
 
             Culqi.open();
@@ -51,16 +41,63 @@
 
         function culqi() {
 
-            if (Culqi.token) { // ¡Token creado exitosamente!
+            if (Culqi.token) {
+                // ¡Token creado exitosamente!
+
                 // Get the token ID:
                 var token = Culqi.token;
-                $('#token').html(token.id);
-                alert('Venta Realizada con Exito '+token.id);
+                $("#espere").show();
+                $('#buyButton').hide();
+
+                var objmeta = { "idcomprobante": $("#LabelId").val() };
+
+                $.ajax({
+                    url: 'https://api.culqi.com/v2/charges',
+                    data: JSON.stringify({
+
+                        "amount": $("#LabeMonto").val(),
+                        "capture": true,
+                        "currency_code": "PEN",
+                        "description": $("#LabelDescripcion").val(),
+                        "email": Culqi.token.email,
+                        "installments": 0,
+                        "metadata": objmeta,
+                        "source_id": Culqi.token.id
+                    }),
+                    contentType: "application/json",
+                    headers: {
+                        "Accept": "application/json",
+                        "authorization": "Bearer sk_test_z248qw7UKmwaep03"
+                    },
+                    error: function (err) {
+                        console(err.responseText);
+                        alert('Lo sentimos, a ocurrido un error');
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        // console(data.outcome.user_message);
+                        $("#espere").hide();
+
+
+                        $("#LabelResp").html(data.outcome.user_message);
+                        $("#LabelOP").html("O.P. : " + data.outcome.code);
+                        $("#LabelBrand").html(data.source.iin.card_brand + " - " + data.source.iin.card_category);
+                        $("#LabelMontoCobrado").html("S/ " + data.amount);
+                        $("#LabelTarjeta").html("N° Tarjeta. : " + data.source.card_number);
+                        $("#LabelRefe").html("N° Refe. : " + data.metadata.idcomprobante);
+                    },
+                    type: 'POST'
+                });
+
+
+
+
 
             } else { // ¡Hubo algún problema!
                 // Mostramos JSON de objeto error en consola
                 console.log(Culqi.error);
                 alert(Culqi.error.mensaje);
+                $("#espere").hide();
             }
         };
 
@@ -78,7 +115,7 @@
                     return results[1];
                 }
             }
-        })(jQuery);  
+        })(jQuery);
 
 
 
@@ -87,16 +124,41 @@
     <script>
         $(document).ready(function () {
 
+            //ocultar valores iniciales
+            $("#espere").hide();
+            $("#LabeMonto").hide();
+            $("#LabelDescripcion").hide();
+            $("#LabelId").hide();
+
             $('#buyButton').on('click', function (e) {
                 // Abre el formulario con las opciones de Culqi.settings
+
                 var tienda = $.get("tienda");
                 var moneda = $.get("moneda");
                 var servicio = $.get("servicio");
                 var valor = $.get("valor");
+                var id = $.get("id");
 
-                $('#monto').html(valor);
+                var valorst = String(valor);
+                valorst = valorst.replace(".", "");
+                valorst = valorst.replace(",", "");
 
-                settings(tienda, moneda, servicio, valor)
+                var valorentero = valorst;
+
+                //id de operacion
+                $("#LabelId").val(id);
+
+                $("#LabelId").hide();
+
+                $("#LabelDescripcion").val(servicio);
+
+                $("#LabelDescripcion").hide();
+
+                $("#LabeMonto").val(valorentero);
+
+                $("#LabeMonto").hide();
+
+                settings(tienda, moneda, servicio, valorentero)
 
 
                 // return false;
@@ -114,35 +176,48 @@
     </script>
 
 
-
-
-
 </head>
 <body>
-    <!--<input value="Pagar" id="buyButton" type="button" />-->
-   
-    <form action="" method="POST" id="culqi-card-form" style="width:300px;margin-left:40px;margin-right:40px">
-      
-        <table>
+    <form runat="server" method="POST" style="margin-left:40px;margin-right:40px;margin-top:100px">
+
+        <table style="width:100%;text-align:center;">
             <tr><td colspan="3"><label>  </label></td></tr>
-            <tr><td><button class="btn btn-info" type="button" id="buyButton">Validar Tarjeta</button></td></tr>
-            <tr><td><label>Id tarjeta:</label></td><td><label id="token">token:</label></td></tr>
-            <tr><td><label>Monto S/</label></td><td><label id="monto"></label></td></tr>
-            <tr><td><label>Direccion</label></td><td><input id="address" class="form-control" /></td></tr>
-            <tr><td><label>Ciudad</label></td><td><input id="address_city" class="form-control" /><input id="country_code" value="PE" type="hidden" class="form-control" /></td></tr>
-            <tr><td><label>Nombres</label></td><td><input id="first_name" class="form-control" /></td></tr>
-            <tr><td><label>Apellidos</label></td><td><input id="last_name" class="form-control" /></td></tr>
-            <tr><td><label>Telefono</label></td><td><input id="phone_number" class="form-control" /></td></tr>
-            <tr><td><button class="btn btn-info" type="button" id="buyButton">Registrar Cobro</button></td></tr>
+            <tr><td><button class="btn btn-info" type="button" id="buyButton">Pagar con CULQI</button></td></tr>
+
+
+
+            <tr>
+                <td>
+                    <input id="LabelId" type="text" />
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input id="LabelDescripcion" type="text" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input id="LabeMonto" type="text" />
+                </td>
+            </tr>
+
+
+            <tr><td><img src="Content/Pago-Tarjeta.gif" id="espere" /></td></tr>
+            <tr><td><strong><label id="LabelBrand"></label></strong></td></tr>
+            <tr></tr>
+            <tr><td><label id="LabelResp"></label> </td></tr>
+            <tr></tr>
+            <tr><td><label id="LabelOP"></label></td></tr>
+            <tr><td><label id="LabelRefe"></label></td></tr>
+            <tr><td><label id="LabelTarjeta"></label></td></tr>
+            <tr><td><label id="LabelMontoCobrado"></label></td></tr>
         </table>
-            
-     
-    
+
 
 
 
     </form>
-
-  
 </body>
 </html>

@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta http-equiv="Content-Type"   name="viewport" content="charset=utf-8,width=device-width, initial-scale=1.0"/>
-    <meta>
+
     <title>PASARELLA DE PAGO</title>
     
     <script src="Scripts/jquery-1.10.2.js"></script>
@@ -15,21 +15,8 @@
 
     <script>
         Culqi.publicKey = 'pk_test_PduG6BSK54mJ02va';
-        //Culqi.init();
-
-     //   Culqi.publicKey = 'pk_test_zIJd7UuclPwxLDPx';
-        //Culqi.settings({
-        //    title: 'Culqi Store',
-        //    currency: 'PEN',
-        //    description: 'Polo/remera Culqi lover',
-        //    amount: 3500
-        //});
-        //Culqi.settings({
-        //    title: 'Culqi Store',
-        //    currency: 'PEN',
-        //    description: 'Polo/remera Culqi lover',
-        //    amount: 3500
-        //});
+         
+      
 
     </script>
 
@@ -55,28 +42,28 @@
 
         function culqi() {
 
-            if (Culqi.token) { // ¡Token creado exitosamente!
+            if (Culqi.token) {
+                // ¡Token creado exitosamente!
+
                 // Get the token ID:
                 var token = Culqi.token;
-          
-                $("#<%=LabeToken.ClientID%>").val(token.id);
-                $("#<%=LabeToken.ClientID%>").attr('readonly', true);
-                
-                $("#<%=LabelEmail.ClientID%>").val(token.email);
-                $("#<%=LabelEmail.ClientID%>").attr('readonly', true);
-               // alert('Venta Realizada con Exito');
+           $("#espere").show(); 
+                  $('#buyButton').hide();
 
-                
-        
-                console.log(Culqi)
+                var objmeta = { "idcomprobante":  $("#LabelId").val()}; 
 
       $.ajax({
                 url: 'https://api.culqi.com/v2/charges',
                 data: JSON.stringify({
-                    "source_id": Culqi.token.id,
-                    "amount":  $("#<%=LabeMonto.ClientID%>").val(),
+                   
+                    "amount": $("#LabeMonto").val(),
+                    "capture":true,
                     "currency_code": "PEN",
-                    "email": Culqi.token.email
+                    "description": $("#LabelDescripcion").val(),
+                    "email": Culqi.token.email,
+                    "installments":0,
+                    "metadata": objmeta ,
+                    "source_id": Culqi.token.id
                 }),
                 contentType: "application/json",
                 headers: {
@@ -84,19 +71,26 @@
                     "authorization": "Bearer sk_test_z248qw7UKmwaep03"
                 },
                 error: function (err) {
-                    console(err);
+                    console(err.responseText);
                     alert('Lo sentimos, a ocurrido un error');
                 },
                 dataType: 'json',
                 success: function (data) {
+                   // console(data.outcome.user_message);
+                    $("#espere").hide(); 
+                  
 
-                    alert(data.outcome.user_message);
-                    
+                    $("#LabelResp").html(data.outcome.user_message);   
+                    $("#LabelOP").html("O.P. : " + data.outcome.code);
+                    $("#LabelBrand").html(data.source.iin.card_brand +" - "+ data.source.iin.card_category);
+                    $("#LabelMontoCobrado").html("S/ " + data.amount);
+                    $("#LabelTarjeta").html("N° Tarjeta. : " + data.source.card_number);
+                    $("#LabelRefe").html("N° Refe. : "+ data.metadata.idcomprobante);
                 },
                 type: 'POST'
             });
 
-     
+        
      
 
 
@@ -104,6 +98,7 @@
                 // Mostramos JSON de objeto error en consola
                 console.log(Culqi.error);
                 alert(Culqi.error.mensaje);
+                  $("#espere").hide(); 
             }
         };
 
@@ -130,8 +125,15 @@
     <script>
         $(document).ready(function () {
 
+            //ocultar valores iniciales
+            $("#espere").hide(); 
+               $("#LabeMonto").hide();
+                $("#LabelDescripcion").hide();
+                 $("#LabelId").hide();
+
             $('#buyButton').on('click', function (e) {
-                // Abre el formulario con las opciones de Culqi.settings
+                // Abre el formulario con las opciones de Culqi.settings   
+               
                 var tienda = $.get("tienda");
                 var moneda = $.get("moneda");
                 var servicio = $.get("servicio");
@@ -145,20 +147,21 @@
           var valorentero = valorst;
 
                 //id de operacion
-                $("#<%=LabelId.ClientID%>").val(id);
-                $("#<%=LabelId.ClientID%>").attr('readonly', true);
+                $("#LabelId").val(id);
+          
+                $("#LabelId").hide();
 
-                $("#<%=LabelDescripcion.ClientID%>").val(servicio);
-                $("#<%=LabelDescripcion.ClientID%>").attr('readonly', true);
-
-                $('#montodecimal').html(valor)
-                $("#<%=LabeMonto.ClientID%>").val(valorentero);
-                $("#<%=LabeMonto.ClientID%>").attr('readonly', true);
-                $("#<%=LabeMonto.ClientID%>").hide();
+                $("#LabelDescripcion").val(servicio);
+               
+                 $("#LabelDescripcion").hide();
+              
+                $("#LabeMonto").val(valorentero);
+             
+                $("#LabeMonto").hide();
 
                 settings(tienda, moneda, servicio, valorentero)
-
-
+              
+             
                 // return false;
 
             });
@@ -176,71 +179,38 @@
 
 </head>
 <body>
-   <form runat="server"  method="POST"  style="width:300px;margin-left:40px;margin-right:40px">
-       <asp:Panel ID="PanelInicio" runat="server">
-        <table>
+   <form runat="server"  method="POST"  style="margin-left:40px;margin-right:40px;margin-top:100px">
+      
+        <table style="width:100%;text-align:center;">
             <tr><td colspan="3"><label>  </label></td></tr>
-            <tr><td><button class="btn btn-info" type="button" id="buyButton">Validar Tarjeta</button></td></tr>
+            <tr><td><button class="btn btn-info" type="button" id="buyButton">Pagar con CULQI</button></td></tr>
            
 
-            <tr><td><label>Id tarjeta:</label></td><td>
-                <asp:TextBox ID="LabeToken" runat="server" Text="" CssClass="form-control"></asp:TextBox>
-   
-                                                   </td></tr>
-            <tr><td><label>Id Operacion</label></td><td>
-                <asp:TextBox ID="LabelId" runat="server" Text=""   CssClass="form-control"></asp:TextBox>
-            </td></tr>
-            <tr><td><label>Descripcion</label></td><td><asp:TextBox ID="LabelDescripcion" runat="server" Text=""   CssClass="form-control"></asp:TextBox></td></tr>
-            <tr><td><label>Monto S/</label></td><td>
-                <label id="montodecimal"></label>
-            <asp:TextBox ID="LabeMonto" runat="server" Text=""   CssClass="form-control"></asp:TextBox>
-
-                                                </td></tr>
-            <tr><td><label>Email</label></td><td> <asp:TextBox ID="LabelEmail" runat="server" Text=""   CssClass="form-control"></asp:TextBox></td></tr>
-            <tr><td><label>Direccion</label></td>
-                <td>
-                    <asp:TextBox ID="TextDireccion"  CssClass="form-control" runat="server"></asp:TextBox>
-
-                </td>
-
-            </tr>
-            <tr><td><label>Ciudad</label></td>
-                <td>
-                    <asp:TextBox ID="TextCiudad" CssClass="form-control" runat="server"></asp:TextBox>
-                </td>
-            </tr>
-            <tr><td><label>Nombres</label></td>
-                <td>
-                   <asp:TextBox ID="TextNombres" CssClass="form-control" runat="server"></asp:TextBox>
-
-                </td></tr>
-            <tr><td><label>Apellidos</label></td>
-                <td><asp:TextBox ID="TextApellidos" CssClass="form-control" runat="server"></asp:TextBox></td></tr>
-           
-            <tr><td><label>Telefono</label></td>
-                <td><asp:TextBox ID="TextTelefono" CssClass="form-control" runat="server"></asp:TextBox></td>
-           
-                <td></td>
-
-            </tr>
+            
             <tr><td>
-                <asp:Button ID="ButtFinalizar" OnClick="ButtFinalizar_Click" CssClass="btn btn-info" runat="server" Text="Registrar Cobro" /></td></tr>
-           </table>
-            </asp:Panel>
+                <input id="LabelId" type="text" />
+              
+            </td></tr>
+            <tr><td>
+                <input id="LabelDescripcion" type="text" />
+                </td></tr>
+            <tr><td>
+          <input id="LabeMonto" type="text" />
+                                                       </td></tr>
+   
 
-       <asp:Panel ID="PanelResp" runat="server" Visible="false">
-  <table style="text-align:center;">
-      <tr><td><strong><asp:Label ID="LabelBrand" runat="server" Text="Label"></asp:Label></strong></td></tr>
+   <tr><td><img src="Content/Pago-Tarjeta.gif" id="espere" /></td></tr>   
+      <tr><td><strong><label id="LabelBrand"></label></strong></td></tr>
        <tr></tr>
-      <tr><td> <asp:Label ID="LabelResp" runat="server" Text="Label"></asp:Label></td></tr>
+      <tr><td><label id="LabelResp"></label> </td></tr>
          <tr></tr>
-         <tr><td><asp:Label ID="LabelOP" runat="server" Text="Label"></asp:Label></td></tr>
-       <tr><td><asp:Label ID="LabelRefe" runat="server" Text="Label"></asp:Label></td></tr>
-         <tr><td><asp:Label ID="LabelTarjeta" runat="server" Text="Label"></asp:Label></td></tr>
-       <tr><td><asp:Label ID="LabelMonto" runat="server" Text="Label"></asp:Label></td></tr>
+         <tr><td><label id="LabelOP"></label></td></tr>
+       <tr><td><label id="LabelRefe"></label></td></tr>
+         <tr><td><label id="LabelTarjeta"></label></td></tr>
+       <tr><td><label id="LabelMontoCobrado"></label></td></tr>
   </table>
       
-       </asp:Panel>
+      
 
 
     </form>
