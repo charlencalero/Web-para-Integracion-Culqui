@@ -47,6 +47,11 @@
                 // Get the token ID:
                 var token = Culqi.token;
                 $("#espere").show();
+               // $('#logo').hide();
+                $('#titulo').hide();
+                $('#fila1').hide();
+                $('#fila2').hide();
+                $('#fila3').hide();
                 $('#buyButton').hide();
 
                 var objmeta = { "idcomprobante": $("#LabelId").val() };
@@ -77,8 +82,8 @@
                     success: function (data) {
                         // console(data.outcome.user_message);
                         $("#espere").hide();
-                        var brand = data.source.iin.card_brand + "-" + data.source.iin.card_category;
-                        window.open("boucher.html?resp=" + data.outcome.user_message + "&op=" + data.outcome.code+"&brand="+brand+"&monto=" + data.amount+"&tarjeta=" + data.source.card_number+"&refe=" + data.metadata.idcomprobante);
+                        var brand = data.source.iin.card_brand ;
+                        window.location="boucher.html?resp=" + data.outcome.user_message + "&op=" + data.outcome.code+"&brand="+brand+"&monto=" + data.amount+"&tarjeta=" + data.source.card_number+"&refe=" + data.metadata.idcomprobante;
 
                     
                     },
@@ -174,32 +179,32 @@
 
 </head>
 <body>
-    <form runat="server" method="POST" style="margin-left:40px;margin-right:40px;margin-top:50px">
+    <form runat="server" method="POST" style="margin-left:10px;margin-right:10px">
 
         <table style="width:100%;text-align:center;">
             <tr>
-                <td colspan="3">
-                    <img src="Content/logo_escon.png" style="height:80px;" />
+                <td >
+                    <img src="Content/logo_escon.png" id="logo" style="height:80px;" />
                 </td>
             </tr>
-            <tr><td><h4><strong>ESCON-MovilPOS</strong></h4></td></tr>
+            <tr><td><h4><strong id="titulo">ESCON-MovilPOS</strong></h4></td></tr>
             <tr ><td ><button style="margin-bottom:50px;margin-top:50px" class="btn btn-info" type="button" id="buyButton"><strong>Abrir Pasarela</strong></button></td></tr>
             <tr><td><label></label></td></tr>
-            <tr><td>
+            <tr><td id="fila1">
     <img src="Content/visa.png" />
     <img src="Content/mc.png" />
     <img src="Content/diners.png" />
     <img src="Content/amex.png" />
 
 </td></tr>
-            <tr><td>
+            <tr><td id="fila2">
 
     <img src="Content/cmr.png" />
     <img src="Content/ripley.png" />
     <img src="Content/oh.png" />
     <img src="Content/cencosud.png" />
 </td></tr>
-            <tr><td>
+            <tr><td id="fila3">
                     <img src="Content/presta.png" />
     <img src="Content/up.png" />
 
